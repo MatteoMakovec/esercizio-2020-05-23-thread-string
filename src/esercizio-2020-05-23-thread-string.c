@@ -28,10 +28,9 @@ il thread principale aspetta il risultato dei tre threads e poi scrive su stdout
 #include <semaphore.h>
 
 
-
-void * thread_function_1(char * content);
-void * thread_function_2(char * content);
-void * thread_function_3(char * content);
+void * thread_function_1(void *arg);
+void * thread_function_2(void *arg);
+void * thread_function_3(void *arg);
 
 int main() {
 	char * content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mattis rhoncus urna neque viverra justo nec ultrices. Pretium quam vulputate dignissim suspendisse in est ante. Vitae congue mauris rhoncus aenean. Blandit cursus risus at ultrices mi. Ut lectus arcu bibendum at varius vel pharetra vel. Etiam non quam lacus suspendisse faucibus interdum posuere. Eget sit amet tellus cras adipiscing enim eu turpis egestas. Lectus magna fringilla urna porttitor rhoncus dolor purus non. Sit amet consectetur adipiscing elit duis tristique sollicitudin nibh. Nec tincidunt praesent semper feugiat nibh. Sapien pellentesque habitant morbi tristique senectus et netus et malesuada.";
@@ -80,27 +79,28 @@ int main() {
 	exit(EXIT_SUCCESS);
 }
 
-void * thread_function_1(char * content){
+void * thread_function_1(void *arg){
+	char *str = (char *) arg;
 	int * vowels = calloc(1, sizeof(int));
 	if(vowels == NULL){
 		perror("calloc()\n");
 		exit(EXIT_FAILURE);
 	}
 
-	for(int i=0 ; i<strlen(content) ; i++){
-		if(content[i] == 'a' || content[i] == 'A'){
+	for(int i=0 ; i<strlen(str) ; i++){
+		if(str[i] == 'a' || str[i] == 'A'){
 			vowels[0]++;
 		}
-		if(content[i] == 'e' || content[i] == 'E'){
+		if(str[i] == 'e' || str[i] == 'E'){
 			vowels[0]++;
 		}
-		if(content[i] == 'i' || content[i] == 'I'){
+		if(str[i] == 'i' || str[i] == 'I'){
 			vowels[0]++;
 		}
-		if(content[i] == 'o' || content[i] == 'O'){
+		if(str[i] == 'o' || str[i] == 'O'){
 			vowels[0]++;
 		}
-		if(content[i] == 'u' || content[i] == 'U'){
+		if(str[i] == 'u' || str[i] == 'U'){
 			vowels[0]++;
 		}
 	}
@@ -110,16 +110,17 @@ void * thread_function_1(char * content){
 
 
 
-void * thread_function_2(char * content){
+void * thread_function_2(void *arg){
+	char *str = (char *) arg;
 	int * consonants = calloc(1, sizeof(int));
 	if(consonants == NULL){
 		perror("calloc()\n");
 		exit(EXIT_FAILURE);
 	}
 
-	for(int i=0 ; i< strlen(content) ; i++){
-		if((content[i] >= 65 && content[i] <= 90) || (content[i] >= 97 && content[i] <= 122)){
-	        if(content[i] != 'a' && content[i] != 'e' && content[i] != 'i' && content[i] != 'o' && content[i] != 'u' && content[i] != 'A' && content[i] != 'E' && content[i] != 'I' && content[i] != 'O' && content[i] != 'U')
+	for(int i=0 ; i< strlen(str) ; i++){
+		if((str[i] >= 65 && str[i] <= 90) || (str[i] >= 97 && str[i] <= 122)){
+	        if(str[i] != 'a' && str[i] != 'e' && str[i] != 'i' && str[i] != 'o' && str[i] != 'u' && str[i] != 'A' && str[i] != 'E' && str[i] != 'I' && str[i] != 'O' && str[i] != 'U')
 	        	consonants[0]++;
 	    }
 	}
@@ -127,15 +128,16 @@ void * thread_function_2(char * content){
 	return (void *) consonants;
 }
 
-void * thread_function_3(char * content){
+void * thread_function_3(void *arg){
+	char *str = (char *) arg;
 	int * spaces = calloc(1, sizeof(int));
 	if(spaces == NULL){
 		perror("calloc()\n");
 		exit(EXIT_FAILURE);
 	}
 
-	for(int i=0 ; i< strlen(content) ; i++){
-		if(content[i] == ' ' || content[i] == '\n' || content[i] == '\t'){
+	for(int i=0 ; i< strlen(str) ; i++){
+		if(str[i] == ' ' || str[i] == '\n' || str[i] == '\t'){
 			spaces[0]++;
 	    }
 	}
